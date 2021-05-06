@@ -26,7 +26,7 @@ class DefaultTaskDataProvider(
             TaskMetrics.State.toKey() to task.state.name,
             TaskMetrics.Module.toKey() to task.module,
             TaskMetrics.RootNode.toKey() to task.rootNode.toString(),
-            TaskMetrics.Task.toKey() to task.taskPath,
+            TaskMetrics.Task.toKey() to task.taskName,
             TaskMetrics.WorkerId.toKey() to task.workerId,
             TaskMetrics.Critical.toKey() to task.critical.toString(),
             TaskMetrics.Value.toKey() to task.ms.toDuration(DurationUnit.MILLISECONDS).inSeconds,

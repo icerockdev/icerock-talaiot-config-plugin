@@ -9,3 +9,13 @@ plugins {
   id("dev.icerock.gradle.talaiot") version("2.0.0")
 }
 ```
+# Development
+In plugin catalog create a file `gradle.properties`  
+
+add keys:  
+`influx.url`  
+`influx.org`  
+`influx.bucket`  
+`influx.token`  
+
+for values you could use <a href="https://www.influxdata.com/">influxdata.com</a> service
