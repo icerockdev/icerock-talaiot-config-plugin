@@ -18,4 +18,4 @@ add keys:
 `influx.bucket`  
 `influx.token`  
 
-for values you could use <a href="https://www.influxdata.com/">influxdata.com</a> service
+for values you could use [influxdata.com](https://www.influxdata.com/) service
