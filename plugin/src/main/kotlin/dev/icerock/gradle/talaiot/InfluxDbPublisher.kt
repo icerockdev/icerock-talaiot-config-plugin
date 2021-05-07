@@ -89,7 +89,9 @@ class InfluxDbPublisher(
     }
 
     private fun createTaskPoints(report: ExecutionReport): List<Point>? {
-        return report.tasks?.map { task ->
+        return report.tasks?.filter { task ->
+            task.ms.div(1000.0) >= 30.0
+        }?.map { task ->
             val dataProvider: ValuesProvider = DefaultTaskDataProvider(task, report)
 
             Point.measurement(configuration.taskMetricName)
