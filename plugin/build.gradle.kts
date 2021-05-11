@@ -7,10 +7,11 @@ plugins {
     id("com.gradle.plugin-publish") version ("0.14.0")
     id("com.github.kukuhyoniatmoko.buildconfigkotlin") version ("1.0.5")
     id("java-gradle-plugin")
+    id("org.gradle.maven-publish")
 }
 
 group = "dev.icerock.gradle"
-version = "2.0.1"
+version = "2.0.2"
 
 repositories {
     jcenter()

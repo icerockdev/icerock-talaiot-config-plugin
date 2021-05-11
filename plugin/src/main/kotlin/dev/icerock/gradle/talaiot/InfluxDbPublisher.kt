@@ -17,6 +17,9 @@ import io.github.cdsap.talaiot.metrics.ValuesProvider
 import io.github.cdsap.talaiot.publisher.Publisher
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.logging.Logger
+import kotlin.time.ExperimentalTime
+import kotlin.time.milliseconds
+import kotlin.time.seconds
 
 class InfluxDbPublisher(
     private val configuration: Configuration,
@@ -88,8 +91,11 @@ class InfluxDbPublisher(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun createTaskPoints(report: ExecutionReport): List<Point>? {
-        return report.tasks?.map { task ->
+        return report.tasks?.filter { task ->
+            task.ms.milliseconds >= 30.seconds
+        }?.map { task ->
             val dataProvider: ValuesProvider = DefaultTaskDataProvider(task, report)
 
             Point.measurement(configuration.taskMetricName)
