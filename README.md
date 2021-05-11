@@ -6,7 +6,7 @@ All build statistics will be sent on IceRock's analytics database for analysis.
 in root `build.gradle.kts`:
 ```kotlin
 plugins {
-  id("dev.icerock.gradle.talaiot") version("2.0.0")
+  id("dev.icerock.gradle.talaiot") version("2.0.2")
 }
 ```
 # Development
