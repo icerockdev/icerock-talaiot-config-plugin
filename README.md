@@ -3,10 +3,10 @@ Configuration of [Talaiot gradle plugin](https://github.com/cdsap/Talaiot/) with
 All build statistics will be sent on IceRock's analytics database for analysis.
 
 # Setup
-in root `build.gradle.kts`:
+in root `build.gradle.kts` (gradle 6.9+):
 ```kotlin
 plugins {
-  id("dev.icerock.gradle.talaiot") version("2.0.2")
+  id("dev.icerock.gradle.talaiot") version("2.+")
 }
 ```
 # Development
