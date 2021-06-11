@@ -5,15 +5,35 @@
 package dev.icerock.gradle.talaiot
 
 import BuildConfig
+import com.gradle.enterprise.gradleplugin.GradleEnterprisePlugin
 import io.github.cdsap.talaiot.plugin.TalaiotPlugin
 import io.github.cdsap.talaiot.plugin.TalaiotPluginExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Configuration
+import org.gradle.api.initialization.Settings
+import org.gradle.kotlin.dsl.gradleEnterprise
 
-class TalaiotConfigPlugin : Plugin<Project> {
+class TalaiotConfigPlugin : Plugin<Settings> {
     private val talaiotPlugin = TalaiotPlugin()
+    private val gradleScanPlugin = GradleEnterprisePlugin()
 
-    override fun apply(target: Project) {
+    override fun apply(target: Settings) {
+        gradleScanPlugin.apply(target)
+
+        target.gradleEnterprise {
+            buildScan {
+                it.publishAlways()
+                it.termsOfServiceUrl = "https://gradle.com/terms-of-service"
+                it.termsOfServiceAgree = "yes"
+                it.isUploadInBackground = true
+            }
+        }
+
+        target.gradle.rootProject { configureRootProject(it) }
+    }
+
+    private fun configureRootProject(target: Project) {
         talaiotPlugin.apply(target)
 
         target.talaiot {
@@ -24,7 +44,8 @@ class TalaiotConfigPlugin : Plugin<Project> {
                             url = BuildConfig.influxUrl,
                             org = BuildConfig.influxOrg,
                             bucket = BuildConfig.influxBucket,
-                            token = BuildConfig.influxToken
+                            token = BuildConfig.influxToken,
+                            publishTaskMetrics = false
                         ),
                         logger = project.logger
                     )
@@ -33,50 +54,56 @@ class TalaiotConfigPlugin : Plugin<Project> {
             metrics.customTaskMetrics("projectName" to target.name)
         }
 
-        configureKotlinVersionMetric(target)
-        configureDependenciesMetric(target)
+        configureConfigurationsMetrics(target)
         configureMobilePluginMetric(target)
     }
 
-    private fun configureKotlinVersionMetric(target: Project) {
+    private fun configureConfigurationsMetrics(target: Project) {
         target.allprojects { project ->
             project.configurations.configureEach { configuration ->
-                configuration.dependencies.matching { dependency ->
-                    dependency.group == "org.jetbrains.kotlin" && dependency.name.startsWith("kotlin-stdlib")
-                }.configureEach { dependency ->
-                    val version = dependency.version ?: return@configureEach
-
-                    target.talaiot {
-                        metrics.customTaskMetrics("kotlinVersion" to version)
-                        metrics.customBuildMetrics("kotlinVersion" to version)
-                    }
-                }
+                configureConfigurationsMetrics(configuration, target)
+                configureDependenciesMetric(configuration, target)
             }
         }
     }
 
-    private fun configureDependenciesMetric(target: Project) {
-        target.allprojects { project ->
-            project.configurations.configureEach { configuration ->
-                configuration.dependencies.matching { dependency ->
-                    val group = dependency.group ?: return@matching false
-                    if (!group.startsWith("dev.icerock")) return@matching false
+    private fun configureConfigurationsMetrics(
+        configuration: Configuration,
+        target: Project
+    ) {
+        configuration.dependencies.matching { dependency ->
+            dependency.group == "org.jetbrains.kotlin" && dependency.name.startsWith("kotlin-stdlib")
+        }.configureEach { dependency ->
+            val version = dependency.version ?: return@configureEach
 
-                    val ignoreList =
-                        listOf("iosx64", "iosarm64", "metadata", "android", "android-debug")
-                    if (ignoreList.any { dependency.name.endsWith("-$it") }) return@matching false
+            target.talaiot {
+                metrics.customTaskMetrics("kotlinVersion" to version)
+                metrics.customBuildMetrics("kotlinVersion" to version)
+            }
+        }
+    }
 
-                    return@matching true
-                }.configureEach { dependency ->
-                    val version = dependency.version ?: return@configureEach
-                    val name = dependency.name
-                    val group = dependency.group.orEmpty()
-                    val metricName = "$group:$name"
+    private fun configureDependenciesMetric(
+        configuration: Configuration,
+        target: Project
+    ) {
+        configuration.dependencies.matching { dependency ->
+            val group = dependency.group ?: return@matching false
+            if (!group.startsWith("dev.icerock")) return@matching false
 
-                    target.talaiot {
-                        metrics.customBuildMetrics(metricName to version)
-                    }
-                }
+            val ignoreList =
+                listOf("iosx64", "iosarm64", "metadata", "android", "android-debug")
+            if (ignoreList.any { dependency.name.endsWith("-$it") }) return@matching false
+
+            return@matching true
+        }.configureEach { dependency ->
+            val version = dependency.version ?: return@configureEach
+            val name = dependency.name
+            val group = dependency.group.orEmpty()
+            val metricName = "$group:$name"
+
+            target.talaiot {
+                metrics.customBuildMetrics(metricName to version)
             }
         }
     }

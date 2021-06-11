@@ -3,7 +3,8 @@
  */
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version ("1.4.31")
+    kotlin("jvm") version ("1.4.31")
+    kotlin("plugin.serialization") version ("1.4.31")
     id("com.gradle.plugin-publish") version ("0.14.0")
     id("com.github.kukuhyoniatmoko.buildconfigkotlin") version ("1.0.5")
     id("java-gradle-plugin")
@@ -11,7 +12,7 @@ plugins {
 }
 
 group = "dev.icerock.gradle"
-version = "2.0.2"
+version = "3.0.0"
 
 repositories {
     jcenter()
@@ -24,6 +25,8 @@ dependencies {
     implementation("io.github.cdsap:talaiot:1.5.0")
     implementation("io.github.cdsap.talaiot:talaiot:1.5.0")
     implementation("com.influxdb:influxdb-client-kotlin:2.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+    implementation("com.gradle:gradle-enterprise-gradle-plugin:3.6.2")
 }
 
 buildConfigKotlin {
@@ -32,6 +35,7 @@ buildConfigKotlin {
         buildConfig("influxOrg", properties["influx.org"] as String)
         buildConfig("influxBucket", properties["influx.bucket"] as String)
         buildConfig("influxToken", properties["influx.token"] as String)
+        buildConfig("slackWebHook", properties["slack.webhook"] as String)
     }
 }
 
