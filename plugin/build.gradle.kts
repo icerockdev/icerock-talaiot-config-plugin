@@ -26,6 +26,7 @@ dependencies {
     implementation("io.github.cdsap.talaiot:talaiot:1.5.0")
     implementation("com.influxdb:influxdb-client-kotlin:2.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+    implementation("com.gradle:gradle-enterprise-gradle-plugin:3.6.2")
 }
 
 buildConfigKotlin {

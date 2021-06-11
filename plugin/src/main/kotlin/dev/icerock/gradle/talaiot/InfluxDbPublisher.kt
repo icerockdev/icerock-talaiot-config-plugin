@@ -81,15 +81,15 @@ class InfluxDbPublisher(
                     logger.info("Sending build point to InfluxDb server $buildMeasurement")
                     writeApi.writePoint(buildMeasurement)
                 }
-
-                logger.lifecycle("")
-                logger.lifecycle("Build analytics was sent on IceRock's InfluxDB.")
-                logger.lifecycle("Detailed information about the collected metrics can be viewed using the build option -info")
-                logger.lifecycle("To disable analytics just remove plugin \"dev.icerock.gradle.talaiot\"")
+                logger.debug("InflixDB publishing successful")
             } catch (e: Exception) {
                 logger.debug("InfluxDbPublisher-Error", e)
                 e.sendToSlack(logger)
             }
+
+            logger.lifecycle("Build analytics was sent on IceRock's InfluxDB and Gradle Build Scan.")
+            logger.lifecycle("Detailed information about the collected metrics can be viewed using the build option -info")
+            logger.lifecycle("To disable analytics just remove plugin \"dev.icerock.gradle.talaiot\"")
         }
     }
 
