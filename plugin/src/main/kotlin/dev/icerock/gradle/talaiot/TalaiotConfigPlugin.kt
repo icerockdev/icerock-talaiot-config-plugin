@@ -24,7 +24,8 @@ class TalaiotConfigPlugin : Plugin<Project> {
                             url = BuildConfig.influxUrl,
                             org = BuildConfig.influxOrg,
                             bucket = BuildConfig.influxBucket,
-                            token = BuildConfig.influxToken
+                            token = BuildConfig.influxToken,
+                            publishTaskMetrics = false
                         ),
                         logger = project.logger
                     )
