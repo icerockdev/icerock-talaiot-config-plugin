@@ -22,6 +22,9 @@ repositories {
 
 dependencies {
     implementation(gradleApi())
+    implementation("io.github.cdsap.talaiot:talaiot:1.5.0") {
+        exclude("io.github.cdsap.talaiot", "talaiot-request")
+    }
     implementation("io.github.cdsap.talaiot.plugin:influxdb:1.5.0") {
         exclude("io.github.cdsap.talaiot", "talaiot-request")
     }
