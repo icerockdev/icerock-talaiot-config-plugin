@@ -6,8 +6,8 @@ package dev.icerock.gradle.talaiot
 
 import BuildConfig
 import com.gradle.enterprise.gradleplugin.GradleEnterprisePlugin
-import io.github.cdsap.talaiot.plugin.TalaiotPlugin
-import io.github.cdsap.talaiot.plugin.TalaiotPluginExtension
+import io.github.cdsap.talaiot.plugin.influxdb.InfluxdbExtension
+import io.github.cdsap.talaiot.plugin.influxdb.TalaiotInfluxdbPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
@@ -15,7 +15,7 @@ import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.gradleEnterprise
 
 class TalaiotConfigPlugin : Plugin<Settings> {
-    private val talaiotPlugin = TalaiotPlugin()
+    private val talaiotPlugin = TalaiotInfluxdbPlugin()
     private val gradleScanPlugin = GradleEnterprisePlugin()
 
     override fun apply(target: Settings) {
@@ -125,8 +125,8 @@ class TalaiotConfigPlugin : Plugin<Settings> {
         }
     }
 
-    private fun Project.talaiot(block: TalaiotPluginExtension.() -> Unit) {
-        extensions.configure(TalaiotPluginExtension::class.java) { ext ->
+    private fun Project.talaiot(block: InfluxdbExtension.() -> Unit) {
+        extensions.configure(InfluxdbExtension::class.java) { ext ->
             ext.block()
         }
     }
