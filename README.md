@@ -14,7 +14,7 @@ pluginManagement {
 }
 
 plugins {
-    id("dev.icerock.gradle.talaiot") version("2.1.+")
+    id("dev.icerock.gradle.talaiot") version("3.+")
 }
 ```
 

@@ -12,7 +12,7 @@ pluginManagement {
 }
 
 plugins {
-    id("dev.icerock.gradle.talaiot") version("2.+")
+    id("dev.icerock.gradle.talaiot") version("3.+")
 }
 
 includeBuild("plugin")
