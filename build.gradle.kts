@@ -16,6 +16,8 @@ buildscript {
 apply(plugin = "dev.icerock.gradle.talaiot")
 
 tasks.create("hello") {
+    group = "testing"
+
     doFirst {
         println("Hello world!")
     }

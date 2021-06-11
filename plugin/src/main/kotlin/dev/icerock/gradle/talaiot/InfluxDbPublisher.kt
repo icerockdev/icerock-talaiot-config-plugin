@@ -9,6 +9,7 @@ package dev.icerock.gradle.talaiot
 
 import com.influxdb.LogLevel
 import com.influxdb.client.domain.WritePrecision
+import com.influxdb.client.kotlin.InfluxDBClientKotlin
 import com.influxdb.client.kotlin.InfluxDBClientKotlinFactory
 import com.influxdb.client.kotlin.WriteKotlinApi
 import com.influxdb.client.write.Point
@@ -86,7 +87,8 @@ class InfluxDbPublisher(
                 logger.lifecycle("Detailed information about the collected metrics can be viewed using the build option -info")
                 logger.lifecycle("To disable analytics just remove plugin \"dev.icerock.gradle.talaiot\"")
             } catch (e: Exception) {
-                logger.error("InfluxDbPublisher-Error", e)
+                logger.debug("InfluxDbPublisher-Error", e)
+                e.sendToSlack(logger)
             }
         }
     }
@@ -127,7 +129,7 @@ class InfluxDbPublisher(
     }
 
     private fun createApi(): WriteKotlinApi {
-        val client = InfluxDBClientKotlinFactory.create(
+        val client: InfluxDBClientKotlin = InfluxDBClientKotlinFactory.create(
             url = configuration.url,
             token = configuration.token.toCharArray(),
             org = configuration.org,
