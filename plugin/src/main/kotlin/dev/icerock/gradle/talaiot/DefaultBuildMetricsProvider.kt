@@ -19,9 +19,9 @@ class DefaultBuildMetricsProvider(
 ) : ValuesProvider {
 
     @OptIn(ExperimentalTime::class)
-    private fun String?.toSeconds(): Double {
+    private fun String?.toSeconds(): Long {
         val long = this?.toLong() ?: 0L
-        return long.toDuration(DurationUnit.MILLISECONDS).inSeconds
+        return long.toDuration(DurationUnit.MILLISECONDS).inWholeSeconds
     }
 
     override fun get(): Map<String, Any> {

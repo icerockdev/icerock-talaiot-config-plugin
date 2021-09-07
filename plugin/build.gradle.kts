@@ -3,10 +3,10 @@
  */
 
 plugins {
-    kotlin("jvm") version ("1.4.31")
-    kotlin("plugin.serialization") version ("1.4.31")
+    kotlin("jvm") version ("1.5.21")
+    kotlin("plugin.serialization") version ("1.5.21")
     id("com.gradle.plugin-publish") version ("0.14.0")
-    id("com.github.kukuhyoniatmoko.buildconfigkotlin") version ("1.0.5")
+    id("com.github.gmazzo.buildconfig") version ("3.0.3")
     id("java-gradle-plugin")
     id("org.gradle.maven-publish")
 }
@@ -17,6 +17,7 @@ version = "3.0.1"
 repositories {
     jcenter()
     google()
+    mavenCentral()
     gradlePluginPortal()
 }
 
@@ -33,15 +34,19 @@ dependencies {
     implementation("com.gradle:gradle-enterprise-gradle-plugin:3.6.2")
 }
 
-buildConfigKotlin {
-    sourceSet("main") {
-        buildConfig("influxUrl", properties["influx.url"] as String)
-        buildConfig("influxOrg", properties["influx.org"] as String)
-        buildConfig("influxBucket", properties["influx.bucket"] as String)
-        buildConfig("influxToken", properties["influx.token"] as String)
-        buildConfig("slackWebHook", properties["slack.webhook"] as String)
+buildConfig {
+    sourceSets.getByName("main") {
+        packageName("dev.icerock.gradle.talaiot")
+        buildConfig {
+            buildConfigField("String", "influxUrl", "\"${properties["influx.url"]}\"")
+            buildConfigField("String", "influxOrg", "\"${properties["influx.org"]}\"")
+            buildConfigField("String", "influxBucket", "\"${properties["influx.bucket"]}\"")
+            buildConfigField("String", "influxToken", "\"${properties["influx.token"]}\"")
+            buildConfigField("String", "slackWebHook", "\"${properties["slack.webhook"]}\"")
+        }
     }
 }
+
 
 gradlePlugin {
     plugins {
