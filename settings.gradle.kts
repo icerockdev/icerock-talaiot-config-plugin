@@ -3,8 +3,9 @@
  */
 
 pluginManagement {
+    includeBuild("plugin")
+
     repositories {
-        mavenLocal()
         mavenCentral()
         google()
         gradlePluginPortal()
@@ -12,7 +13,5 @@ pluginManagement {
 }
 
 plugins {
-    id("dev.icerock.gradle.talaiot") version("3.+")
+    id("dev.icerock.gradle.talaiot")
 }
-
-includeBuild("plugin")
