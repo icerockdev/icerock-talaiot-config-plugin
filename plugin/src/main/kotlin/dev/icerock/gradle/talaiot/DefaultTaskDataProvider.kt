@@ -20,7 +20,6 @@ class DefaultTaskDataProvider(
     private val report: ExecutionReport
 ) : ValuesProvider {
 
-    @OptIn(ExperimentalTime::class)
     override fun get(): Map<String, Any> {
         return mapOf(
             TaskMetrics.State.toKey() to task.state.name,
@@ -29,7 +28,7 @@ class DefaultTaskDataProvider(
             TaskMetrics.Task.toKey() to task.taskName,
             TaskMetrics.WorkerId.toKey() to task.workerId,
             TaskMetrics.Critical.toKey() to task.critical.toString(),
-            TaskMetrics.Value.toKey() to task.ms.toDuration(DurationUnit.MILLISECONDS).inSeconds,
+            TaskMetrics.Value.toKey() to task.ms.millisecondsAsSeconds,
             TaskMetrics.CacheEnabled.toKey() to task.isCacheEnabled,
             TaskMetrics.LocalCacheHit.toKey() to task.isLocalCacheHit,
             TaskMetrics.LocalCacheMiss.toKey() to task.isLocalCacheMiss,

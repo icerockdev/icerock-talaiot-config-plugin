@@ -4,7 +4,6 @@
 
 package dev.icerock.gradle.talaiot
 
-import dev.icerock.gradle.talaiot.BuildConfig
 import com.gradle.enterprise.gradleplugin.GradleEnterprisePlugin
 import io.github.cdsap.talaiot.plugin.influxdb.InfluxdbExtension
 import io.github.cdsap.talaiot.plugin.influxdb.TalaiotInfluxdbPlugin

@@ -3,8 +3,8 @@
  */
 
 plugins {
-    kotlin("jvm") version ("1.5.21")
-    kotlin("plugin.serialization") version ("1.5.21")
+    kotlin("jvm") version ("1.5.30")
+    kotlin("plugin.serialization") version ("1.5.30")
     id("com.gradle.plugin-publish") version ("0.14.0")
     id("com.github.gmazzo.buildconfig") version ("3.0.3")
     id("java-gradle-plugin")
@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "dev.icerock.gradle"
-version = "3.0.2"
+version = "3.0.3"
 
 repositories {
     jcenter()

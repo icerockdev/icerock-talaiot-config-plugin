@@ -10,18 +10,14 @@ package dev.icerock.gradle.talaiot
 import io.github.cdsap.talaiot.entities.ExecutionReport
 import io.github.cdsap.talaiot.metrics.BuildMetrics
 import io.github.cdsap.talaiot.metrics.ValuesProvider
-import kotlin.time.DurationUnit
-import kotlin.time.ExperimentalTime
-import kotlin.time.toDuration
 
 class DefaultBuildMetricsProvider(
     private val report: ExecutionReport
 ) : ValuesProvider {
 
-    @OptIn(ExperimentalTime::class)
     private fun String?.toSeconds(): Long {
         val long = this?.toLong() ?: 0L
-        return long.toDuration(DurationUnit.MILLISECONDS).inWholeSeconds
+        return long.millisecondsAsSeconds
     }
 
     override fun get(): Map<String, Any> {
